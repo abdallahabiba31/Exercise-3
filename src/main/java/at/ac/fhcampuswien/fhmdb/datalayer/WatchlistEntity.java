@@ -32,7 +32,7 @@ public class WatchlistEntity {
     @DatabaseField()
     private double rating;
 
-    /*
+
     public WatchlistEntity()
     {
 
@@ -47,6 +47,6 @@ public class WatchlistEntity {
         this.imgUrl = imgUrl;
         this.lengthInMinutes = lengthInMinutes;
         this.rating = rating;
-    }*/
+    }
 
 }
