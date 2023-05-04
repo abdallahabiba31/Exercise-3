@@ -12,21 +12,21 @@ import java.util.List;
     public class MovieEntity {
     @DatabaseField(generatedId = true)
     private long id;
-    @DatabaseField()
+    @DatabaseField(columnName = "title")
     private String title;
-    @DatabaseField()
+    @DatabaseField(columnName = "description")
     private String description;
 
     //@DatabaseField()
    // private final List<Genre> genres;
 
-    @DatabaseField()
+    @DatabaseField(columnName = "")
     private int releaseYear;
-    @DatabaseField()
+    @DatabaseField(columnName = "")
     private String imgUrl;
-    @DatabaseField()
+    @DatabaseField(columnName = "")
     private int lengthInMinutes; // in minutes
-    @DatabaseField()
+    @DatabaseField(columnName = "")
     private double rating; // 0-10
 
 
