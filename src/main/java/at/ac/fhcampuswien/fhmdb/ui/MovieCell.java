@@ -1,15 +1,19 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.stream.Collectors;
 
 public class MovieCell extends ListCell<Movie> {
@@ -37,7 +41,9 @@ public class MovieCell extends ListCell<Movie> {
         layout.spacingProperty().set(10);
         layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
-        detailBtn.setOnMouseClicked(mouseEvent -> {
+            detailBtn.setOnMouseClicked(mouseEvent -> {
+                //error
+                showExceptionDialog(new MovieApiException("abc"));
             if (collapsedDetails) {
                 layout.getChildren().add(getDetails());
                 collapsedDetails = false;
@@ -49,6 +55,46 @@ public class MovieCell extends ListCell<Movie> {
             }
             setGraphic(layout);
         });
+    }
+
+    //Exception Presentation Layer
+//http://www.java2s.com/example/java/javafx/show-javafx-exception-dialog.html
+    //Exception Alert
+    public static void showExceptionDialog(Throwable throwable) {
+        throwable.printStackTrace();
+
+        //Shows alert typ
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Fhmdb Dialog");
+        alert.setHeaderText("Thrown Exception");
+        alert.setContentText("Database has thrown an exception.");
+
+        //Throwable print in String
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        throwable.printStackTrace(pw);
+        String exceptionText = sw.toString();
+
+        //Layout
+        Label label = new Label("The exception stacktrace was:");
+
+        TextArea textArea = new TextArea(exceptionText);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea,  Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(label, 0, 0);
+        expContent.add(textArea, 0, 1);
+
+        alert.getDialogPane().setExpandableContent(expContent);
+
+        alert.showAndWait();
     }
 
     private VBox getDetails() {
