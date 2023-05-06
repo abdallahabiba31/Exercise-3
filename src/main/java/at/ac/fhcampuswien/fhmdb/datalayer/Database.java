@@ -9,13 +9,14 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 public class Database {
-    //imbedded Database
-    public static final String DB_URL = "jdbc:h2:file: ./db/moviesdb";
+    //embedded Database
+    //built into the Software - no need for an extra server
+    public static final String DB_URL = "jdbc:h2:file: ./db/moviedb";
     public static final String username = "user";
-    public static final String password = "passwort";
+    public static final String password = "password";
 
     private static ConnectionSource connectionSource;
-    private Dao<WatchlistEntity, Long> dao;
+     Dao<WatchlistEntity, Long> dao;
     private static Database instance;
 
     private Database(){
@@ -27,7 +28,7 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
-    public Database getDatabase(){
+    public static Database getDatabase(){
         if (instance == null) {
             instance = new Database();
         }
@@ -48,8 +49,9 @@ public class Database {
     private static void createTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, WatchlistEntity.class);
     }
+    /*
     public void testDB() throws SQLException {
         WatchlistEntity watchlist = new WatchlistEntity("aId", "title", "description", "ACTION", 2003, "URL", 200, 9.8);
         dao.create(watchlist);
-    }
+    }*/
 }
