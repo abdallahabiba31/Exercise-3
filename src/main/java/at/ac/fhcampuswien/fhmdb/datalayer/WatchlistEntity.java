@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.datalayer;
 
+import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -33,7 +34,7 @@ public class WatchlistEntity {
     private double rating;
 
 
-    public WatchlistEntity()
+    public WatchlistEntity(String title, String description)
     {
 
     }
@@ -49,4 +50,6 @@ public class WatchlistEntity {
         this.rating = rating;
     }
 
-}
+
+   }
+
