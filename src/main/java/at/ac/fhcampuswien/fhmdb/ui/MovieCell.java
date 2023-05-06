@@ -4,6 +4,7 @@ import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -21,13 +22,19 @@ public class MovieCell extends ListCell<Movie> {
     private final Label detail = new Label();
     private final Label genre = new Label();
     private final JFXButton detailBtn = new JFXButton("Show Details");
-    private final VBox layout = new VBox(title, detail, genre, detailBtn);
+    private final JFXButton watchlistBtn = new JFXButton("Add to Watchlist!");
+
+    private final VBox layout = new VBox(title, detail, genre, detailBtn, watchlistBtn);
     private boolean collapsedDetails = true;
 
     public MovieCell() {
         super();
         // color scheme
         detailBtn.setStyle("-fx-background-color: #f5c518;");
+        detailBtn.setPrefWidth(110);
+
+        watchlistBtn.setStyle("-fx-background-color: #f5c518;");
+        watchlistBtn.setPrefWidth(110);
         title.getStyleClass().add("text-yellow");
         detail.getStyleClass().add("text-white");
         genre.getStyleClass().add("text-white");
@@ -43,7 +50,7 @@ public class MovieCell extends ListCell<Movie> {
 
             detailBtn.setOnMouseClicked(mouseEvent -> {
                 //error
-                showExceptionDialog(new MovieApiException("abc"));
+                //showExceptionDialog(new MovieApiException("abc"));
             if (collapsedDetails) {
                 layout.getChildren().add(getDetails());
                 collapsedDetails = false;

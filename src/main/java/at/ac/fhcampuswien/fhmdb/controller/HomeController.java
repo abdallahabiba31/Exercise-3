@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.controller;
 
+import at.ac.fhcampuswien.fhmdb.FhmdbApplication;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
@@ -12,9 +13,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
@@ -22,13 +28,16 @@ import java.util.stream.Collectors;
 
 public class HomeController implements Initializable {
     @FXML
+    public VBox mainVBoxHome;
+    @FXML
+    public JFXListView movieListView;
+    @FXML
+    public JFXButton watchlistViewBtn;
+    @FXML
     public JFXButton searchBtn;
 
     @FXML
     public TextField searchField;
-
-    @FXML
-    public JFXListView movieListView;
 
     @FXML
     public JFXComboBox genreComboBox;
@@ -242,5 +251,26 @@ public class HomeController implements Initializable {
         return movies.stream()
                 .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
                 .collect(Collectors.toList());
+    }
+
+    public void loadWatchlist(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist-view.fxml"));
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+            Stage stage = (Stage)mainVBoxHome.getScene().getWindow();
+            stage.setTitle("Watchlist!");
+            stage.setScene(scene);
+        }catch (IOException e) {
+            System.err.println("Error while loading Watchlist.");
+        }
+    }
+
+    public void clearBtnClicked(ActionEvent actionEvent) {
+        genreComboBox.getSelectionModel().clearSelection();
+        releaseYearComboBox.getSelectionModel().clearSelection();
+        ratingFromComboBox.getSelectionModel().clearSelection();
+        searchField.clear();
+
+        initializeState();
     }
 }
