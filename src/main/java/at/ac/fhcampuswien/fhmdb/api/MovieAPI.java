@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.api;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import okhttp3.*;
@@ -49,11 +50,11 @@ public class MovieAPI {
         return url.toString();
     }
 
-    public static List<Movie> getAllMovies() {
+    public static List<Movie> getAllMovies() throws MovieApiException {
         return getAllMovies(null, null, null, null);
     }
 
-    public static List<Movie> getAllMovies(String query, Genre genre, String releaseYear, String ratingFrom){
+    public static List<Movie> getAllMovies(String query, Genre genre, String releaseYear, String ratingFrom) throws MovieApiException {
         String url = buildUrl(query, genre, releaseYear, ratingFrom);
         Request request = new Request.Builder()
                 .url(url)
@@ -69,8 +70,9 @@ public class MovieAPI {
             return Arrays.asList(movies);
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            throw new MovieApiException("Movies cannot be loaded");
         }
-        return new ArrayList<>();
+        //return new ArrayList<>();
     }
 
     public Movie requestMovieById(UUID id){

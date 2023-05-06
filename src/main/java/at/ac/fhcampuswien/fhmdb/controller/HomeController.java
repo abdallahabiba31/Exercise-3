@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb.controller;
 
 import at.ac.fhcampuswien.fhmdb.FhmdbApplication;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class HomeController implements Initializable {
     @FXML
-    public VBox mainVBoxHome;
+    public VBox mainVBox;
     @FXML
     public JFXListView movieListView;
     @FXML
@@ -59,11 +60,16 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeState();
-        initializeLayout();
+        try {
+            initializeState();
+            initializeLayout();
+
+        } catch (MovieApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void initializeState() {
+    public void initializeState() throws MovieApiException {
         List<Movie> result = MovieAPI.getAllMovies();
         setMovies(result);
         setMovieList(result);
@@ -90,7 +96,7 @@ public class HomeController implements Initializable {
 
     public void initializeLayout() {
         movieListView.setItems(observableMovies);   // set the items of the listview to the observable list
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // apply custom cells to the listview
+        movieListView.setCellFactory(movieListView -> new MovieCell(false)); // apply custom cells to the listview
 
         // genre combobox
         Object[] genres = Genre.values();   // get all genres
@@ -186,7 +192,7 @@ public class HomeController implements Initializable {
         observableMovies.addAll(filteredMovies);
     }
 
-    public void searchBtnClicked(ActionEvent actionEvent) {
+    public void searchBtnClicked(ActionEvent actionEvent) throws MovieApiException {
         String searchQuery = searchField.getText().trim().toLowerCase();
         String releaseYear = validateComboboxValue(releaseYearComboBox.getSelectionModel().getSelectedItem());
         String ratingFrom = validateComboboxValue(ratingFromComboBox.getSelectionModel().getSelectedItem());
@@ -212,8 +218,16 @@ public class HomeController implements Initializable {
         return null;
     }
 
-    public List<Movie> getMovies(String searchQuery, Genre genre, String releaseYear, String ratingFrom) {
+    /*public List<Movie> getMovies(String searchQuery, Genre genre, String releaseYear, String ratingFrom) throws MovieApiException {
         return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
+    }*/
+    public List<Movie> getMovies(String searchQuery, Genre genre, String releaseYear, String ratingFrom) {
+        try {
+            return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
+        } catch (MovieApiException e) {
+            MovieCell.showExceptionDialog(e);
+        }
+        return new ArrayList<>();
     }
 
     public void sortBtnClicked(ActionEvent actionEvent) {
@@ -253,19 +267,19 @@ public class HomeController implements Initializable {
                 .collect(Collectors.toList());
     }
 
-    public void loadWatchlist(ActionEvent actionEvent) throws IOException {
+    public void loadWatchlist() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist-view.fxml"));
         try {
             Scene scene = new Scene(fxmlLoader.load(), 890, 620);
-            Stage stage = (Stage)mainVBoxHome.getScene().getWindow();
-            stage.setTitle("Watchlist!");
+            Stage stage = (Stage)mainVBox.getScene().getWindow();
             stage.setScene(scene);
-        }catch (IOException e) {
-            System.err.println("Error while loading Watchlist.");
+
+        } catch (IOException ioe) {
+            MovieCell.showExceptionDialog(new IllegalArgumentException("Watchlist cannot be loaded"));
         }
     }
 
-    public void clearBtnClicked(ActionEvent actionEvent) {
+    public void clearBtnClicked(ActionEvent actionEvent) throws MovieApiException {
         genreComboBox.getSelectionModel().clearSelection();
         releaseYearComboBox.getSelectionModel().clearSelection();
         ratingFromComboBox.getSelectionModel().clearSelection();

@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.datalayer;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -26,6 +28,7 @@ public class Database {
             createTables();
         }catch (SQLException e){
             System.out.println(e.getMessage());
+            MovieCell.showExceptionDialog(new DatabaseException("Database error"));
         }
     }
     public static Database getDatabase(){

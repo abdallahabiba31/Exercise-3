@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@DatabaseTable(tableName = "Movie")
+@DatabaseTable(tableName = "Watchlist")
 public class WatchlistEntity {
     @DatabaseField(generatedId = true)
     private long id;
