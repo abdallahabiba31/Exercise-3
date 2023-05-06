@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 import java.util.List;
 
+//testkomment
 public class WatchlistRepository {
 
     Dao<WatchlistEntity, Long> dao;
