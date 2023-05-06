@@ -28,9 +28,7 @@ public class MovieCell extends ListCell<Movie> {
     private final Label detail = new Label();
     private final Label genre = new Label();
     private final JFXButton addToWatchlistBtn = new JFXButton("Add to Watchlist!");
-
     private final JFXButton detailBtn = new JFXButton("Show Details");
-
     private final VBox layout = new VBox(title, detail, genre, addToWatchlistBtn, detailBtn);
     private final boolean isWatchlistCell;
     private boolean collapsedDetails = true;
@@ -40,10 +38,10 @@ public class MovieCell extends ListCell<Movie> {
         super();
         this.isWatchlistCell = isWatchlistCell;
         // color scheme
-        addToWatchlistBtn.setStyle("-fx-background-color: #f5c518;");
-        addToWatchlistBtn.setPrefWidth(110);
         detailBtn.setStyle("-fx-background-color: #f5c518;");
         detailBtn.setPrefWidth(110);
+        addToWatchlistBtn.setStyle("-fx-background-color: #f5c518;");
+        addToWatchlistBtn.setPrefWidth(110);
         title.getStyleClass().add("text-yellow");
         detail.getStyleClass().add("text-white");
         genre.getStyleClass().add("text-white");
@@ -65,7 +63,7 @@ public class MovieCell extends ListCell<Movie> {
                 collapsedDetails = false;
                 detailBtn.setText("Hide Details");
             } else {
-                layout.getChildren().remove(4);
+                layout.getChildren().remove(5);
                 collapsedDetails = true;
                 detailBtn.setText("Show Details");
             }
@@ -100,7 +98,7 @@ public class MovieCell extends ListCell<Movie> {
 //http://www.java2s.com/example/java/javafx/show-javafx-exception-dialog.html
     //Exception Alert
     public static void showExceptionDialog(Throwable throwable) {
-        throwable.printStackTrace();
+        //throwable.printStackTrace();
 
         //Shows alert typ
         Alert alert = new Alert(AlertType.ERROR);

@@ -279,7 +279,7 @@ public class HomeController implements Initializable {
         }
     }
 
-    public void clearBtnClicked(ActionEvent actionEvent) throws MovieApiException {
+    public void clearBtnClicked() throws MovieApiException {
         genreComboBox.getSelectionModel().clearSelection();
         releaseYearComboBox.getSelectionModel().clearSelection();
         ratingFromComboBox.getSelectionModel().clearSelection();

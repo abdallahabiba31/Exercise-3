@@ -21,7 +21,7 @@
                 </padding>
             </Label>
             <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
-            <JFXButton fx:id="homeViewBtn" onAction="#loadHomeView" prefHeight="25.0" prefWidth="77.0" styleClass="background-yellow" stylesheets="@styles.css" text="Home"></JFXButton>
+            <JFXButton mnemonicParsing="false" fx:id="homeViewBtn" onAction="#loadHomeView" prefHeight="25.0" prefWidth="77.0" styleClass="background-yellow" stylesheets="@styles.css" text="Home"></JFXButton>
 
         </children>
     </HBox>
