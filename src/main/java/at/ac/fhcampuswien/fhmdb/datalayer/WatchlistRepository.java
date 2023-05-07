@@ -13,7 +13,12 @@ public class WatchlistRepository {
         this.dao = Database.getDatabase().getDao();
     }
     public void removeFromWatchlist(Movie movie) throws SQLException {
-        dao.delete(movieToWatchlist(movie));
+        String title = movie.getTitle().replace("'", "''");
+        List<WatchlistEntity> movies = dao.queryForEq("title", title);
+        if (!movies.isEmpty()) {
+            dao.delete(movies);
+            System.out.println("Deleted " + movie.getTitle() + " from Watchlist");
+        }
     }
      public List<WatchlistEntity> getAll() throws SQLException {
         return dao.queryForAll();
